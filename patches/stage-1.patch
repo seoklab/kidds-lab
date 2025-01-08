@@ -1,0 +1,26 @@
+From 8426b89e439faee6a664f4fa1ec41ac468fc7d76 Mon Sep 17 00:00:00 2001
+From: Nuri Jung <jnooree@snu.ac.kr>
+Date: Fri, 27 Jun 2025 11:28:45 +0900
+Subject: [PATCH] stage-1
+
+---
+ src/main.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/main.py b/src/main.py
+index 800bad4..00fa75e 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -13,7 +13,8 @@ def read_pdb(pdb: Path):
+         for line in f:
+             record = pdbline.record(line)
+             if record == "ATOM" or record == "HETATM":
+-                coords.append(pdbline.coordinates(line))
++                if pdbline.res_seq(line) % 5 == 0:
++                    coords.append(pdbline.coordinates(line))
+ 
+     return np.stack(coords)
+ 
+-- 
+2.50.0
+

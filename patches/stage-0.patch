@@ -1,0 +1,40 @@
+From 250bc4969da3e835c3511d47acb899ce636b4436 Mon Sep 17 00:00:00 2001
+From: Nuri Jung <jnooree@snu.ac.kr>
+Date: Fri, 27 Jun 2025 11:26:41 +0900
+Subject: [PATCH] stage-0
+
+---
+ src/main.py | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/src/main.py b/src/main.py
+index a822148..800bad4 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -11,16 +11,18 @@ def read_pdb(pdb: Path):
+ 
+     with open(pdb) as f:
+         for line in f:
+-            # Fill in here
+-            pass
++            record = pdbline.record(line)
++            if record == "ATOM" or record == "HETATM":
++                coords.append(pdbline.coordinates(line))
+ 
+-    return # What should this return?
++    return np.stack(coords)
+ 
+ 
+ def main():
+     pdb_file = Path(sys.argv[1])
+-
+-    # Fill in here
++    coords = read_pdb(pdb_file)
++    com = np.mean(coords, axis=0)
++    print(f"{com = }")
+ 
+ 
+ if __name__ == "__main__":
+-- 
+2.50.0
+
