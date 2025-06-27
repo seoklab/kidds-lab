@@ -2,7 +2,7 @@ import sys
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
-from pprint import pprint
+from pprint import pformat
 
 import numpy as np
 
@@ -94,7 +94,24 @@ def main():
     pdb_file = Path(sys.argv[1])
     models = read_pdb(pdb_file)
     for model, atoms in enumerate(models):
-        com = np.mean(
+        all_site_full_com = np.mean(
+            [site.coord for atom in atoms.values() for site in atom.sites],
+            axis=0,
+        )
+        all_site_sampled_com = np.mean(
+            [
+                site.coord
+                for atom in atoms.values()
+                if atom.atom_id.res_id.res_seq % 5 == 0
+                for site in atom.sites
+            ],
+            axis=0,
+        )
+        most_occupied_full_com = np.mean(
+            [atom.most_occupied_site().coord for atom in atoms.values()],
+            axis=0,
+        )
+        most_occupied_sampled_com = np.mean(
             [
                 atom.most_occupied_site().coord
                 for atom in atoms.values()
@@ -104,8 +121,12 @@ def main():
         )
         res_cnt = count_model_residues(atoms)
 
-        print(f"{model = }: {com = }")
-        pprint(res_cnt, sort_dicts=False)
+        print(f"{model = }:")
+        print(f"    {all_site_full_com = }")
+        print(f"    {all_site_sampled_com = }")
+        print(f"    {most_occupied_full_com = }")
+        print(f"    {most_occupied_sampled_com = }")
+        print(f"    {pformat(res_cnt, sort_dicts=False)}")
 
 
 if __name__ == "__main__":
