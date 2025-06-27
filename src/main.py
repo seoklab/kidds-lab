@@ -13,7 +13,8 @@ def read_pdb(pdb: Path):
         for line in f:
             record = pdbline.record(line)
             if record == "ATOM" or record == "HETATM":
-                coords.append(pdbline.coordinates(line))
+                if pdbline.res_seq(line) % 5 == 0:
+                    coords.append(pdbline.coordinates(line))
 
     return np.stack(coords)
 
