@@ -11,16 +11,18 @@ def read_pdb(pdb: Path):
 
     with open(pdb) as f:
         for line in f:
-            # Fill in here
-            pass
+            record = pdbline.record(line)
+            if record == "ATOM" or record == "HETATM":
+                coords.append(pdbline.coordinates(line))
 
-    return # What should this return?
+    return np.stack(coords)
 
 
 def main():
     pdb_file = Path(sys.argv[1])
-
-    # Fill in here
+    coords = read_pdb(pdb_file)
+    com = np.mean(coords, axis=0)
+    print(f"{com = }")
 
 
 if __name__ == "__main__":
