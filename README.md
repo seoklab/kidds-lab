@@ -11,8 +11,7 @@ real-world code through a series of progressive changes.
 1. Clone this repository to your local machine.
 
    ```bash
-   git clone https://github.com/seoklab/kidds-lab
-   cd kidds-lab
+   git clone https://github.com/seoklab/kidds-lab && cd kidds-lab
    ```
 
 2. Edit [`src/main.py`](src/main.py) as you progress through each stage of the
