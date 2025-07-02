@@ -27,7 +27,7 @@ Type 'yes' to continue: " confirm
 	fi
 fi
 
-git restore -s "$(git log --max-parents=0 --format=%h)" .
 git clean -fdx
+git restore -s origin/main .
 
 seq 0 $((stage - 1)) | xargs -I '{}' git apply patches/stage-'{}'.patch
